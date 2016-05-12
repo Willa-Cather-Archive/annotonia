@@ -294,7 +294,7 @@ $.TokenList = function (input, url_or_data, settings) {
                   if(selected_dropdown_item) {
                     add_token($(selected_dropdown_item).data("tokeninput"));
                     // this allows for tags to be color-coded based on instructor set-up
-                    annotator.publish("colorEditorTags")
+                    //this.annotator.publish("colorEditorTags")
                     hidden_input.change();
                     return false;
                   } else{
