@@ -20,6 +20,22 @@
 
     <!-- The following plugins are entirely optional -->
 
+    <!-- Offline -->
+    <script src="js/annotonia/annotator.offline.js/offline.min.js"></script>
+    <script>
+      var pageID = window.location.pathname.match(/\/([^./]+)\.html$/);
+      pageID = pageID[1] ? pageID[1] : undefined;
+
+      var optionsOffline = {
+        setAnnotationData: function (note) {
+          note.pageID = pageID;
+        },
+        shouldLoadAnnotation : function (note) {
+          return note.pageID === pageID;
+        }
+      }
+    </script>
+
     <!-- RichText w TinyMCE -->
     <script src="js/annotonia/richText-annotator/lib/tinymce/tinymce.min.js"></script>
     <script src="js/annotonia/richText-annotator/richText-annotator.min.js"></script>
@@ -130,6 +146,7 @@
           // plugins
           $('#airlock').annotator()
 //                       .annotator('addPlugin', 'HighlightTags', optionsTags)
+                       .annotator('addPlugin', 'Offline', optionsOffline)
                        .annotator('addPlugin', 'RichText', optionsRichText)
           ;
         }
