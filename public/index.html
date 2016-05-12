@@ -44,8 +44,14 @@
     <!-- The Store plugin. Saves annotations to a remote backend -->
     <script src="js/annotonia/annotator/pkg/annotator.store.min.js"></script>
 
-    <!-- The Tags plugin. Edit and display tag keywords on annotations -->
-    <script src="js/annotonia/annotator/pkg/annotator.tags.min.js"></script>
+    <!-- Tags -->
+    <script src="js/annotonia/tags-annotator/src/tags-annotator.js"></script>
+    <link rel="stylesheet" href="js/annotonia/tags-annotator/build/tags-annotator.min.css" />
+    <script>
+        var optionsTags = {
+            tag: "Needs Annotated:red,Draft:yellow,Complete:green,Published:blue"
+        };
+    </script>
   </head>
 
   <body>
@@ -123,7 +129,7 @@
           // This is the important bit: how to create the annotator and add
           // plugins
           $('#airlock').annotator()
-                       .annotator('addPlugin', 'Tags')
+                       .annotator('addPlugin', 'HighlightTags', optionsTags)
                        .annotator('addPlugin', 'RichText', optionsRichText)
           ;
         }
