@@ -7,13 +7,12 @@ MAPPING = {
     'created': {'type': 'date'},
     'updated': {'type': 'date'},
     'quote': {'type': 'string', 'analyzer': 'standard'},
-    'tags': {'type': 'string', 'index_name': 'tag'},
+    'tag': {'type': 'string'},
     'text': {'type': 'string', 'analyzer': 'standard'},
     'uri': {'type': 'string'},
     'user': {'type': 'string'},
     'consumer': {'type': 'string'},
-    'ranges': {
-        'index_name': 'range',
+    'range': {
         'properties': {
             'start': {'type': 'string'},
             'end': {'type': 'string'},
@@ -21,8 +20,7 @@ MAPPING = {
             'endOffset': {'type': 'integer'},
         }
     },
-    'permissions': {
-        'index_name': 'permission',
+    'permission': {
         'properties': {
             'read': {'type': 'string'},
             'update': {'type': 'string'},
