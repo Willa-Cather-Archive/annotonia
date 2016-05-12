@@ -20,23 +20,32 @@
 
     <!-- The following plugins are entirely optional -->
 
+    <!-- RichText w TinyMCE -->
+    <script src="js/annotonia/richText-annotator/lib/tinymce/tinymce.min.js"></script>
+    <script src="js/annotonia/richText-annotator/richText-annotator.min.js"></script>
+    <link rel="stylesheet" href="js/annotonia/richText-annotator/richText-annotator.min.css" />
+    <style>
+      .mce-path { display: none !important; }
+      .mce-statusbar { border-width: 0 !important; }
+    </style>
+    <script>
+        var optionsRichText = {
+            tinymce:{
+                extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align|id]",
+                menubar: false,
+                plugins: "media image insertdatetime link code",
+                selector: "li.annotator-item textarea",
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code ",
+                toolbar_items_size: 'small',
+            }
+        };
+    </script>
+
     <!-- The Store plugin. Saves annotations to a remote backend -->
     <script src="js/annotonia/annotator/pkg/annotator.store.min.js"></script>
 
-    <!-- The Auth plugin. Allows users of Annotator to authenticate themselves
-         to the remote backend -->
-    <script src="js/annotonia/annotator/pkg/annotator.auth.min.js"></script>
-
-    <!-- The Permissions plugin. See who created which annotation and create
-         annotations as a specified user -->
-    <script src="js/annotonia/annotator/pkg/annotator.permissions.min.js"></script>
-
     <!-- The Tags plugin. Edit and display tag keywords on annotations -->
     <script src="js/annotonia/annotator/pkg/annotator.tags.min.js"></script>
-
-    <!-- The Markdown plugin. Treat annotation text as Markdown -->
-    <script src="js/annotonia/annotator/lib/vendor/showdown.js"></script>
-    <script src="js/annotonia/annotator/pkg/annotator.markdown.min.js"></script>
   </head>
 
   <body>
@@ -114,11 +123,9 @@
           // This is the important bit: how to create the annotator and add
           // plugins
           $('#airlock').annotator()
-                       .annotator('addPlugin', 'Permissions')
-                       .annotator('addPlugin', 'Markdown')
-                       .annotator('addPlugin', 'Tags');
-
-          $('#airlock').data('annotator').plugins['Permissions'].setUser("Joe Bloggs");
+                       .annotator('addPlugin', 'Tags')
+                       .annotator('addPlugin', 'RichText', optionsRichText)
+          ;
         }
       });
     </script>
