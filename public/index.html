@@ -23,6 +23,8 @@
     <!-- Offline -->
     <script src="js/annotonia/annotator.offline.js/offline.min.js"></script>
     <script>
+      // To load only annotations for this specific page
+      // Also used by Store plugin below
       var pageID = window.location.pathname.match(/\/([^./]+)\.html$/);
       pageID = pageID[1] ? pageID[1] : undefined;
 
@@ -59,6 +61,17 @@
 
     <!-- The Store plugin. Saves annotations to a remote backend -->
     <script src="js/annotonia/annotator/pkg/annotator.store.min.js"></script>
+    <script>
+        var optionsStore = {
+            annotationData: {
+                'pageID' : pageID
+            },
+            loadFromSearch: {
+                'pageID' : pageID
+            },
+            prefix: 'https://rosie.unl.edu/annostore'
+        };
+    </script>
 
     <!-- Tags -->
     <script src="js/annotonia/tags-annotator/src/tags-annotator.js"></script>
@@ -146,8 +159,9 @@
           // plugins
           $('#airlock').annotator()
 //                       .annotator('addPlugin', 'HighlightTags', optionsTags)
-                       .annotator('addPlugin', 'Offline', optionsOffline)
+//                       .annotator('addPlugin', 'Offline', optionsOffline)
                        .annotator('addPlugin', 'RichText', optionsRichText)
+                       .annotator('addPlugin', 'Store', optionsStore)
           ;
         }
       });
