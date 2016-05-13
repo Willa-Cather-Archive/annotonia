@@ -20,6 +20,9 @@
 
     <!-- The following plugins are entirely optional -->
 
+    <!-- Filter -->
+    <script src="js/annotonia/annotator/pkg/annotator.filter.min.js"></script>
+
     <!-- Offline -->
     <script src="js/annotonia/annotator.offline.js/offline.min.js"></script>
     <script>
@@ -161,6 +164,7 @@
           // This is the important bit: how to create the annotator and add
           // plugins
           $('#airlock').annotator()
+                       .annotator('addPlugin', 'Filter')
 //                       .annotator('addPlugin', 'HighlightTags', optionsTags)
 //                       .annotator('addPlugin', 'Offline', optionsOffline)
                        .annotator('addPlugin', 'RichText', optionsRichText)
