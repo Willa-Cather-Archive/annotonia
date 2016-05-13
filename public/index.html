@@ -81,6 +81,9 @@
             tag: "Needs Annotated:red,Draft:yellow,Complete:green,Published:blue"
         };
     </script>
+
+    <!-- Unsupported -->
+    <script src="js/annotonia/annotator/pkg/annotator.unsupported.min.js"></script>
   </head>
 
   <body>
@@ -162,6 +165,7 @@
 //                       .annotator('addPlugin', 'Offline', optionsOffline)
                        .annotator('addPlugin', 'RichText', optionsRichText)
                        .annotator('addPlugin', 'Store', optionsStore)
+                       .annotator('addPlugin', 'Unsupported')
           ;
         }
       });
