@@ -4,89 +4,42 @@
     <meta charset="utf-8">
     <title>JS annotation test</title>
 
-    <!-- jQuery must be included before Annotator -->
-    <script src="js/annotonia/annotator/lib/vendor/jquery.js"></script>
-
-    <!-- If you're sure your users will only be using browsers modern
-         enough to have their own JSON.parse and JSON.stringify
-         implementations you can skip this -->
-    <script src="js/annotonia/annotator/lib/vendor/json2.js"></script>
-
-    <!-- The main Annotator script -->
-    <script src="js/annotonia/annotator/pkg/annotator.min.js"></script>
-
-    <!-- Annotator's styling and images -->
-    <link rel="stylesheet" type="text/css" href="js/annotonia/annotator/pkg/annotator.min.css">
-
-    <!-- The following plugins are entirely optional -->
-
-    <!-- Filter -->
-    <script src="js/annotonia/annotator/pkg/annotator.filter.min.js"></script>
-
-    <!-- Offline -->
-    <script src="js/annotonia/annotator.offline.js/offline.min.js"></script>
+    <!-- Annotonia (w jQuery 1.9.1) -->
+    <script src="js/lib/LAB.min.js"></script>
     <script>
-      // To load only annotations for this specific page
-      // Also used by Store plugin below
-      var pageID = window.location.pathname.match(/\/([^./]+)\.html$/);
-      pageID = pageID[1] ? pageID[1] : undefined;
+      $LAB
+      .setOptions({BasePath : "js/annotonia/"})
+      .script("annotator/lib/vendor/json2.js")
+      .script("annotator/lib/vendor/jquery.js")
+      .script("annotator/pkg/annotator.min.js")
 
-      var optionsOffline = {
-        setAnnotationData: function (note) {
-          note.pageID = pageID;
-        },
-        shouldLoadAnnotation : function (note) {
-          return note.pageID === pageID;
-        }
-      }
+
+      // Annotator Plugins
+      // ----------------
+      // Filter
+      .script("annotator/pkg/annotator.filter.min.js")
+
+      // Offline
+      .script("annotator.offline.js/offline.min.js")
+
+      // RichText with TinyMCE
+      .script("richText-annotator/lib/tinymce/tinymce.min.js")
+      .script("richText-annotator/richText-annotator.min.js")
+
+      // Store
+      .script("annotator/pkg/annotator.store.min.js")
+
+      // Tags
+      .script("tags-annotator/src/tags-annotator.js")
+
+      // Unsupported
+      .script("annotator/pkg/annotator.unsupported.min.js")
+
+
+      // Start Annotonia
+      // ----------------
+      .script("annotonia.js")
     </script>
-
-    <!-- RichText w TinyMCE -->
-    <script src="js/annotonia/richText-annotator/lib/tinymce/tinymce.min.js"></script>
-    <script src="js/annotonia/richText-annotator/richText-annotator.min.js"></script>
-    <link rel="stylesheet" href="js/annotonia/richText-annotator/richText-annotator.min.css" />
-    <style>
-      .mce-path { display: none !important; }
-      .mce-statusbar { border-width: 0 !important; }
-    </style>
-    <script>
-        var optionsRichText = {
-            tinymce:{
-                extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align|id]",
-                menubar: false,
-                plugins: "media image insertdatetime link code",
-                selector: "li.annotator-item textarea",
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code ",
-                toolbar_items_size: 'small',
-            }
-        };
-    </script>
-
-    <!-- The Store plugin. Saves annotations to a remote backend -->
-    <script src="js/annotonia/annotator/pkg/annotator.store.min.js"></script>
-    <script>
-        var optionsStore = {
-            annotationData: {
-                'pageID' : pageID
-            },
-            loadFromSearch: {
-                'pageID' : pageID
-            },
-            prefix: 'https://rosie.unl.edu/annostore'
-        };
-    </script>
-
-    <!-- Tags -->
-    <script src="js/annotonia/tags-annotator/src/tags-annotator.js"></script>
-    <link rel="stylesheet" href="js/annotonia/tags-annotator/build/tags-annotator.min.css" />
-    <script>
-        var optionsTags = {
-            tag: "Needs Annotated:red,Draft:yellow,Complete:green,Published:blue"
-        };
-    </script>
-
-    <!-- Unsupported -->
-    <script src="js/annotonia/annotator/pkg/annotator.unsupported.min.js"></script>
   </head>
 
   <body>
@@ -153,27 +106,6 @@
         </tbody>
       </table>
     </div>
-
-    <script>
-      jQuery(function ($) {
-        if (typeof $.fn.annotator !== 'function') {
-          alert("Ooops! it looks like you haven't built the Annotator concatenation file. " +
-                "Either download a tagged release from GitHub, or modify the Cakefile to point " +
-                "at your copy of the YUI compressor and run `cake package`.");
-        } else {
-          // This is the important bit: how to create the annotator and add
-          // plugins
-          $('#airlock').annotator()
-                       .annotator('addPlugin', 'Filter')
-//                       .annotator('addPlugin', 'HighlightTags', optionsTags)
-//                       .annotator('addPlugin', 'Offline', optionsOffline)
-                       .annotator('addPlugin', 'RichText', optionsRichText)
-                       .annotator('addPlugin', 'Store', optionsStore)
-                       .annotator('addPlugin', 'Unsupported')
-          ;
-        }
-      });
-    </script>
   </body>
 </html>
 
