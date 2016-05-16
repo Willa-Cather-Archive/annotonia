@@ -4,8 +4,13 @@ $('head').append('<link rel="stylesheet" href="js/annotonia/annotator/pkg/annota
 
 // To load only annotations for this specific page
 // Also used by Store plugin below
-var pageID = window.location.pathname.match(/\/([^./]+)\.html$/);
-pageID = pageID[1] ? pageID[1] : undefined;
+var pageID = window.location.pathname.match(/(?:\/|\.)([^./]+)\.html$/);
+
+// Default to implied "index" page name if no other detected
+pageID = pageID !== undefined
+  ? pageID[1] ? pageID[1] : undefined
+  : "index"
+;
 
 var optionsOffline = {
   setAnnotationData: function (note) {
@@ -63,9 +68,7 @@ $(function ($) {
   if (typeof $.fn.annotator !== 'function') {
     alert("Annotator was not able to load properly.");
   } else {
-    // This is the important bit: how to create the annotator and add
-    // plugins
-    $('#airlock')
+    $('body')
       .annotator()
       .annotator('addPlugin', 'Filter')
 //      .annotator('addPlugin', 'HighlightTags', optionsTags)
