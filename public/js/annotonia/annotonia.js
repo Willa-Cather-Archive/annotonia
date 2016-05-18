@@ -71,7 +71,7 @@ $(function ($) {
     $('body')
       .annotator()
       .annotator('addPlugin', 'Filter')
-//      .annotator('addPlugin', 'HighlightTags', optionsTags)
+      .annotator('addPlugin', 'HighlightTags', optionsTags)
 //      .annotator('addPlugin', 'Offline', optionsOffline)
       .annotator('addPlugin', 'RichText', optionsRichText)
       .annotator('addPlugin', 'Store', optionsStore)
