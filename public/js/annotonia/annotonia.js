@@ -59,7 +59,7 @@ var optionsStore = {
 $('head').append('<link rel="stylesheet" href="js/annotonia/tags-annotator/build/tags-annotator.min.css">');
 
 var optionsTags = {
-  tag: "Needs Annotated:red,Draft:yellow,Complete:green,Published:blue"
+  tag: "Needs Correction:red,Needs Annotated:yellow,Draft:green,Complete:teal,Published:blue"
 };
 
 

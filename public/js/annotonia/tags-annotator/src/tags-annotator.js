@@ -1142,7 +1142,15 @@ Annotator.Plugin.HighlightTags = (function(_super) {
             if (typeof self.colors[par.html()] !== "undefined") {
                 var finalcolor = self.colors[par.html()];
                 rgbColor = "background-color:rgba(" + finalcolor.red + ", " + finalcolor.green + ", " + finalcolor.blue + ", 0.5);";
-                textColor = "color:#fff;";
+
+                // Only turn text white if tag color isn't yellow
+                if (!(finalcolor.red == 255
+                     && finalcolor.green == 255
+                     && finalcolor.blue == 0
+                     )
+                ) {
+                  textColor = "color:#fff;";
+                }
             }
 
             // note that to change the text color you must change it in the paragraph tag, not the div
