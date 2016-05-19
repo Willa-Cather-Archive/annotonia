@@ -936,13 +936,63 @@ Annotator.Plugin.HighlightTags = (function(_super) {
         
         var self = this;
         
-        var newfield = Annotator.$('<li class="annotator-item">'+ "<div><input placeholder =\"Add tags\" type=\"text\" id=\"tag-input\" name=\"tags\" /></div>"+'</li>');
-                Annotator.$(self.field).replaceWith(newfield);
-                self.field=newfield[0];
-                
-                //
-        
-            
+        var newfield = Annotator.$('\
+<li class="annotator-item">\
+  <ol class="tag-radios">\
+    <li>\
+      <label class="correction">\
+        <input type="radio" name="tags" value="Needs Correction">\
+        Needs Correction\
+      </label>\
+    </li>\
+    <li>\
+      <label class="annotation">\
+        <input type="radio" name="tags" value="Needs Annotation">\
+        Needs Annotation\
+      </label>\
+    </li>\
+    <li>\
+      <label class="draft">\
+        <input type="radio" name="tags" value="Draft">\
+        Draft\
+      </label>\
+    </li>\
+    <li>\
+      <label class="complete">\
+        <input type="radio" name="tags" value="Complete">\
+        Complete\
+      </label>\
+    </li>\
+    <li>\
+      <label class="published">\
+        <input type="radio" name="tags" value="Published">\
+        Published\
+      </label>\
+    </li>\
+  </ol>\
+</li>'
+        );
+        Annotator.$(self.field).replaceWith(newfield);
+        self.field=newfield[0];
+
+        // Set radio button labels to update when clicked
+        $(self.field.children[0]).children().click(function () {
+          var $clickedTag = $(this.children[0]);
+          if (! $clickedTag.children().is(':checked')) {
+            // Clear selected tag
+            $('.tag-radios').find('input:checked')
+              .prop('checked', false).trigger('change')
+              .parent().removeClass('selected')
+            ;
+
+            // Select clicked tag
+            $clickedTag.find('input')
+              .prop('checked', true).trigger('change')
+              .parent().addClass('selected')
+            ;
+          }
+        });
+
         //-- Viewer
         var newview = this.annotator.viewer.addField({
             load: this.updateViewer,
@@ -1091,41 +1141,31 @@ Annotator.Plugin.HighlightTags = (function(_super) {
     }
     
     HighlightTags.prototype.updateField = function(field, annotation) {
-        // the first time that this plug in runs, the predetermined instructor tags are
-        // added and stored for the dropdown list
-        if(this.isFirstTime) {
-            var tags = this.options.tag.split(",");
-            var tokensavailable = [];
+      // Check for tag already in annotation and set it as selected in form
+      if (typeof annotation.tags !== "undefined") {
+        // Clear selected tag
+        $('.tag-radios').find('input:checked')
+          .prop('checked', false).trigger('change')
+          .parent().removeClass('selected')
+        ;
 
-            // tags are given the structure that the dropdown/token function requires
-            tags.forEach (function(tagnames) {
-                lonename = tagnames.split(":");
-                tokensavailable.push({'id': lonename[0], 'name': lonename[0]});
-            });
-
-            // they are then added to the appropriate input for tags in annotator
-            $("#tag-input").tokenInput(tokensavailable);
-            this.isFirstTime = false;
+        // Select appropriate tag
+        var $savedTag = $('.tag-radios').find('input[value="'+ annotation.tags[0] +'"]');
+        if ($savedTag.length) {
+          // Select tag saved for this annotation
+          $savedTag
+            .prop('checked', true).trigger('change')
+            .parent().addClass('selected')
+          ;
         }
-
-        $('#token-input-tag-input').attr('placeholder', 'Add tags...');
-        $('#tag-input').tokenInput('clear');            
-        
-        // loops through the tags already in the annotation and "add" them to this annotation
-        if (typeof annotation.tags !== "undefined") {
-            for (tagnum = 0; tagnum < annotation.tags.length; tagnum++) {
-                var n = annotation.tags[tagnum];
-                if (typeof this.annotator.plugins["HighlightTags"] !== 'undefined') {
-                    // if there are flags, we must ignore them
-                    if (annotation.tags[tagnum].indexOf("flagged-") == -1) {
-                        $('#tag-input').tokenInput('add',{'id':n,'name':n});
-                    }
-                } else {
-                    $('#tag-input').tokenInput('add', {'id': n, 'name': n});
-                }
-            }
+        else {
+          // Default to selecting "Needs Annotation" tag
+          $('.tag-radios .annotation')
+            .addClass('selected')
+            .find('input').prop('checked', true).trigger('change')
+          ;
         }
-        this.colorizeEditorTags();
+      }
     }
 
     // this function adds the appropriate color to the tag divs for each annotation
@@ -1161,13 +1201,7 @@ Annotator.Plugin.HighlightTags = (function(_super) {
     
     // The following function is run when a person hits submit.
     HighlightTags.prototype.pluginSubmit = function(field, annotation) {
-        var tokens = Array.prototype.slice.call($(".token-input-input-token").parent().find('.token-input-token'));
-        var arr = [];
-        tokens.forEach(function(element){
-            tag = element.firstChild.firstChild;
-            arr.push(tag.nodeValue);
-        });
-        annotation.tags = arr;
+      annotation.tags = [$('.tag-radios input:checked').val()];
     }
 
     // The following allows you to edit the annotation popup when the viewer has already

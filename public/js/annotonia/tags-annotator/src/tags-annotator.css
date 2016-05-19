@@ -95,3 +95,49 @@ div.token-input-dropdown ol li.token-input-selected-dropdown-item {
 .token-input-list{
     padding:0px;
 }
+
+ol.tag-radios label {
+ border: 0.125em outset #444;
+ border-radius: 0.25em;
+ box-shadow: 0.125em 0.125em 0 rgba(128, 128, 128, 0.5);
+ color: #444;
+ font-weight: bold;
+ margin: 0.125em;
+ padding: 0.5em 0.25em;
+ text-shadow: 0 0.0625em 0 rgba(255, 255, 255, 0.5);
+}
+
+ol.tag-radios label.annotation {
+ background-color: rgba(255, 255, 0, .3);
+}
+
+ol.tag-radios label.complete {
+ background-color: rgba(0, 128, 128, .3);
+}
+
+ol.tag-radios label.correction {
+ background-color: rgba(255, 0, 0, .3);
+}
+
+ol.tag-radios label.draft {
+ background-color: rgba(0, 128, 0, .3);
+}
+
+ol.tag-radios label.published {
+ background-color: rgba(0, 0, 255, .3);
+}
+
+ol.tag-radios label.selected {
+ border-style: inset;
+ box-shadow: none;
+}
+
+ol.tag-radios label input {
+ display: none !important;
+}
+
+ol.tag-radios li {
+ float: left;
+ list-style: none;
+ padding: 0.75em 0;
+}
