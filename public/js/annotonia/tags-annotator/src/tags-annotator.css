@@ -97,10 +97,10 @@ div.token-input-dropdown ol li.token-input-selected-dropdown-item {
 }
 
 ol.tag-radios label {
- border: 0.125em outset #444;
+ border: 0.125em outset #DDD;
  border-radius: 0.25em;
  box-shadow: 0.125em 0.125em 0 rgba(128, 128, 128, 0.5);
- color: #444;
+ color: #666;
  font-weight: bold;
  margin: 0.125em;
  padding: 0.5em 0.25em;
@@ -128,8 +128,9 @@ ol.tag-radios label.published {
 }
 
 ol.tag-radios label.selected {
- border-style: inset;
+ border: 0.125em inset #666;
  box-shadow: none;
+ color: #222;
 }
 
 ol.tag-radios label input {
