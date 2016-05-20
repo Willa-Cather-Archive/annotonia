@@ -981,13 +981,13 @@ Annotator.Plugin.HighlightTags = (function(_super) {
           if (! $clickedTag.children().is(':checked')) {
             // Clear selected tag
             $('.tag-radios').find('input:checked')
-              .prop('checked', false).trigger('change')
+              .prop('checked', false)
               .parent().removeClass('selected')
             ;
 
             // Select clicked tag
             $clickedTag.find('input')
-              .prop('checked', true).trigger('change')
+              .prop('checked', true)
               .parent().addClass('selected')
             ;
           }
@@ -1141,30 +1141,25 @@ Annotator.Plugin.HighlightTags = (function(_super) {
     }
     
     HighlightTags.prototype.updateField = function(field, annotation) {
-      // Check for tag already in annotation and set it as selected in form
-      if (typeof annotation.tags !== "undefined") {
-        // Clear selected tag
-        $('.tag-radios').find('input:checked')
-          .prop('checked', false).trigger('change')
-          .parent().removeClass('selected')
-        ;
+      // Clear selected tag
+      $('.tag-radios').find('input:checked')
+        .prop('checked', false)
+        .parent().removeClass('selected')
+      ;
 
-        // Select appropriate tag
-        var $savedTag = $('.tag-radios').find('input[value="'+ annotation.tags[0] +'"]');
-        if ($savedTag.length) {
-          // Select tag saved for this annotation
-          $savedTag
-            .prop('checked', true).trigger('change')
-            .parent().addClass('selected')
-          ;
-        }
-        else {
-          // Default to selecting "Needs Annotation" tag
-          $('.tag-radios .annotation')
-            .addClass('selected')
-            .find('input').prop('checked', true).trigger('change')
-          ;
-        }
+      if (typeof annotation.tags !== "undefined") {
+        // Select tag saved for this annotation
+        $('.tag-radios').find('input[value="'+ annotation.tags[0] +'"]')
+          .prop('checked', true)
+          .parent().addClass('selected')
+        ;
+      }
+      else {
+        // Default: Select "Needs Annotation" tag
+        $('.tag-radios .annotation')
+          .addClass('selected')
+          .find('input').prop('checked', true)
+        ;
       }
     }
 
