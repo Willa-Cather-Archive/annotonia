@@ -96,7 +96,22 @@ div.token-input-dropdown ol li.token-input-selected-dropdown-item {
     padding:0px;
 }
 
-ol.tag-radios label {
+
+/* Annotonia */
+.annotator-viewer .annotator-controls button {
+ background-size: 2.5em;
+ padding: 1em;
+}
+
+.annotator-viewer .annotator-controls .annotator-delete {
+ background-position: 0 -10.25em;
+}
+
+.annotator-viewer .annotator-controls .annotator-edit {
+ background-position: 0 -8.25em;
+}
+
+.tag-radios label {
  border: 0.125em outset #DDD;
  border-radius: 0.25em;
  box-shadow: 0.125em 0.125em 0 rgba(128, 128, 128, 0.5);
@@ -107,37 +122,37 @@ ol.tag-radios label {
  text-shadow: 0 0.0625em 0 rgba(255, 255, 255, 0.5);
 }
 
-ol.tag-radios label.annotation {
+.tag-radios label.annotation {
  background-color: rgba(255, 255, 0, .3);
 }
 
-ol.tag-radios label.complete {
+.tag-radios label.complete {
  background-color: rgba(0, 128, 128, .3);
 }
 
-ol.tag-radios label.correction {
+.tag-radios label.correction {
  background-color: rgba(255, 0, 0, .3);
 }
 
-ol.tag-radios label.draft {
+.tag-radios label.draft {
  background-color: rgba(0, 128, 0, .3);
 }
 
-ol.tag-radios label.published {
+.tag-radios label.published {
  background-color: rgba(0, 0, 255, .3);
 }
 
-ol.tag-radios label.selected {
+.tag-radios label.selected {
  border: 0.125em inset #666;
  box-shadow: none;
  color: #222;
 }
 
-ol.tag-radios label input {
+.tag-radios label input {
  display: none !important;
 }
 
-ol.tag-radios li {
+.tag-radios li {
  float: left;
  list-style: none;
  padding: 0.75em 0;
