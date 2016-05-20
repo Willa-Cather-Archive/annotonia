@@ -1,6 +1,9 @@
 // Annotator's styling and images
 $('head').append('<link rel="stylesheet" href="js/annotonia/annotator/pkg/annotator.min.css">');
 
+// Annotonia CSS
+$('head').append('<link rel="stylesheet" href="js/annotonia/annotonia.css">');
+
 
 // To load only annotations for this specific page
 // Also used by Store plugin below
