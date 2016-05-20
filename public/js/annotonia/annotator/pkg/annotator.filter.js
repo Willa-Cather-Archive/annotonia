@@ -55,8 +55,8 @@
         }
         _ref = input.split(/\s+/);
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          keyword = _ref[_i];
-          if (property.indexOf(keyword) === -1) {
+          keyword = new RegExp(_ref[_i], 'i');
+          if (!keyword.test(property)) {
             return false;
           }
         }
