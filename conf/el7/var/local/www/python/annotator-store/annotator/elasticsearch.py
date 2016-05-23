@@ -183,16 +183,19 @@ class _Model(dict):
         _add_updated(self)
 
         if 'id' not in self:
-            op_type = 'create'
+            res = self.es.conn.index(index=self.es.index,
+                                     doc_type=self.__type__,
+                                     body=self,
+                                     op_type='create',
+                                     refresh=refresh)
+            self['id'] = res['_id']
         else:
-            op_type = 'index'
-
-        res = self.es.conn.index(index=self.es.index,
-                                 doc_type=self.__type__,
-                                 body=self,
-                                 op_type=op_type,
-                                 refresh=refresh)
-        self['id'] = res['_id']
+            res = self.es.conn.index(index=self.es.index,
+                                     doc_type=self.__type__,
+                                     body=self,
+                                     op_type='index',
+                                     id=self['id'],
+                                     refresh=refresh)
 
     def delete(self):
         if 'id' in self:
