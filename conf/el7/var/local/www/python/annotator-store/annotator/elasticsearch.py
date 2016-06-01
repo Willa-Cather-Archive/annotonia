@@ -183,10 +183,46 @@ class _Model(dict):
         _add_updated(self)
 
         if 'id' not in self:
+            """
+            Retrieve auto-incremented ID number from sequence index
+            Based on: http://blogs.perl.org/users/clinton_gormley/2011/10/elasticsearchsequence---a-blazing-fast-ticket-server.html
+
+            # Create index
+            curl -XPUT 'http://127.0.0.1:9200/sequence/?pretty=1'  -d '
+            {
+               "settings" : {
+                  "number_of_shards"     : 1,
+                  "auto_expand_replicas" : "0-all"
+               },
+               "mappings" : {
+                  "sequence" : {
+                     "_source" : { "enabled" : 0 },
+                     "_all"    : { "enabled" : 0 },
+                     "enabled" : 0
+                  }
+               }
+            }
+            '
+
+            # Insert empty document
+            curl -XPUT 'http://127.0.0.1:9200/sequence/sequence/1?pretty=1' -d '{}'
+            """
+            sequence = self.es.conn.index(index='sequence',
+                                     doc_type='sequence',
+                                     body='{}',
+                                     op_type='index',
+                                     id=1,
+                                     refresh=refresh)
+
+            # Pad ID number up to 6 digits
+            next_id = sequence['_version']
+            next_id = '{:06d}'.format(next_id)
+
             res = self.es.conn.index(index=self.es.index,
                                      doc_type=self.__type__,
                                      body=self,
                                      op_type='create',
+                                     id=next_id,
                                      refresh=refresh)
             self['id'] = res['_id']
         else:
