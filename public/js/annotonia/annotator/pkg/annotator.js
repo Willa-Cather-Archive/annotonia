@@ -1832,7 +1832,15 @@
     Viewer.prototype.onButtonClick = function(event, type) {
       var item;
       item = $(event.target).parents('.annotator-annotation');
-      return this.publish(type, [item.data('annotation')]);
+
+      var confirmed = true;
+      if (type === "delete") {
+        confirmed = false;
+        confirmed = window.confirm("Are you sure you want to delete this annotation?");
+      }
+      if (confirmed) {
+        return this.publish(type, [item.data('annotation')]);
+      }
     };
 
     return Viewer;
@@ -1946,3 +1954,4 @@
 
 //
 //# sourceMappingURL=annotator.map
+
