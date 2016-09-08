@@ -3,6 +3,7 @@ from annotator import authz, document, es
 TYPE = 'annotation'
 MAPPING = {
     'id': {'type': 'string', 'index': 'no'},
+    'anno_ref_id': {'type': 'string'},
     'annotator_schema_version': {'type': 'string'},
     'created': {'type': 'date'},
     'updated': {'type': 'date'},

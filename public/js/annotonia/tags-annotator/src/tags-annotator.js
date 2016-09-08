@@ -963,14 +963,14 @@ Annotator.Plugin.HighlightTags = (function(_super) {
         Complete\
       </label>\
     </li>\
-    <li>\
-      <label class="published">\
-        <input type="radio" name="tags" value="Published">\
-        Published\
-      </label>\
+  </ol>\
+  <ol id="anno-ref">\
+    <li class="hide">\
+      <input type="text" name="ref_anno_id" placeholder="Ref Annotation ID #">\
     </li>\
   </ol>\
-</li>'
+</li>\
+'
         );
         Annotator.$(self.field).replaceWith(newfield);
         self.field=newfield[0];
@@ -990,6 +990,38 @@ Annotator.Plugin.HighlightTags = (function(_super) {
               .prop('checked', true)
               .parent().addClass('selected')
             ;
+          }
+        });
+
+        // Add toggle for referencing another annotation
+	$('.annotator-controls').prepend('\
+<div class="anno-ref-control">\
+  <label>\
+    <input type="checkbox" class="anno-ref-toggle" value="">\
+    Reference another annotation\
+  </label>\
+</div>\
+'
+	);
+
+
+        $annoInput = $($('.annotator-editor .annotator-listing').children()[0]);
+        $annoRefInput = $('#anno-ref input');
+        $annoRefToggle = $('.anno-ref-toggle');
+
+        // Add behavior to toggle
+        $annoRefToggle.click(function() {
+          if ($annoRefToggle.prop('checked')) {
+            $annoInput.addClass('hide');
+
+            $annoRefInput.parent().removeClass('hide')
+            $annoRefInput.focus();
+          }
+          else {
+            $annoRefInput.parent().addClass('hide');
+
+            $annoInput.removeClass('hide');
+            tinymce.execCommand('mceFocus', false, 'tinymce');
           }
         });
 
@@ -1161,6 +1193,37 @@ Annotator.Plugin.HighlightTags = (function(_super) {
           .find('input').prop('checked', true)
         ;
       }
+
+      // Set up annotation reference UI
+      $annoInput = $($('.annotator-editor .annotator-listing').children()[0]);
+      $annoRefInput = $('#anno-ref input');
+      $annoRefToggle = $('.anno-ref-toggle');
+
+      // Check whether the toggle should initialize as enabled
+      if (typeof annotation.anno_ref_id !== 'undefined' && annotation.anno_ref_id) {
+        $annoRefInput.val(annotation.anno_ref_id);
+        $annoRefToggle.prop('checked', true);
+
+        $annoInput.addClass('hide');
+
+        $annoRefInput.parent().removeClass('hide');
+        window.setTimeout(
+          function() {$annoRefInput.focus()}
+          , 500
+        );
+      }
+      else {
+        $annoRefInput.val('');
+        $annoRefToggle.prop('checked', false);
+        
+        $annoRefInput.parent().addClass('hide');
+
+        $annoInput.removeClass('hide');
+        window.setTimeout(
+          function() {tinymce.execCommand('mceFocus', false, 'tinymce');}
+          , 500
+        );
+      }
     }
 
     // this function adds the appropriate color to the tag divs for each annotation
@@ -1197,6 +1260,11 @@ Annotator.Plugin.HighlightTags = (function(_super) {
     // The following function is run when a person hits submit.
     HighlightTags.prototype.pluginSubmit = function(field, annotation) {
       annotation.tags = [$('.tag-radios input:checked').val()];
+
+      $annoRefInput = $('#anno-ref input');
+      $annoRefToggle = $('.anno-ref-toggle');
+      if ($annoRefToggle.prop('checked')) {annotation.anno_ref_id = $annoRefInput.val()}
+      else {annotation.anno_ref_id = ''}
     }
 
     // The following allows you to edit the annotation popup when the viewer has already

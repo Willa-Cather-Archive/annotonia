@@ -1,3 +1,12 @@
+.anno-ref-control {
+  float: left;
+}
+
+.anno-ref-toggle {
+  margin-top: 0.25em;
+  vertical-align: bottom;
+}
+
 .annotator-hl {
   border-radius: 0.25em;
 }
@@ -21,6 +30,10 @@
 
 .annotator-viewer .annotator-controls .annotator-edit {
   background-position: 0 -8.25em;
+}
+
+.tag-radios {
+  overflow: hidden;
 }
 
 .tag-radios label {
@@ -68,4 +81,9 @@
   float: left;
   list-style: none;
   padding: 0.75em 0;
+}
+
+
+#anno-ref {
+  list-style: none;
 }
