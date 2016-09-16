@@ -1263,8 +1263,23 @@ Annotator.Plugin.HighlightTags = (function(_super) {
 
       $annoRefInput = $('#anno-ref input');
       $annoRefToggle = $('.anno-ref-toggle');
-      if ($annoRefToggle.prop('checked')) {annotation.anno_ref_id = $annoRefInput.val()}
-      else {annotation.anno_ref_id = ''}
+      if ($annoRefToggle.prop('checked')) {
+        // Prevent self-referencing annotations by changing to invalid ID
+        if ($annoRefInput.val() == annotation.id) {$annoRefInput.val('000000')}
+
+        // Set flag for new reference ID so viewer knows to update or not
+        if (annotation.anno_ref_id !== undefined && annotation.anno_ref_id !== $annoRefInput.val()) {Annotator.anno_ref_new = true}
+
+        annotation.anno_ref_id = $annoRefInput.val();
+        annotation.text = '';
+      }
+      else {
+        // Force Viewer to reload anno_ref_data for this annotation
+        if (Annotator.anno_ref_data !== undefined && Annotator.anno_ref_data[annotation.id] !== undefined) {Annotator.anno_ref_data[annotation.id] = undefined}
+
+        // Remove any previous reference ID
+        annotation.anno_ref_id = undefined
+      }
     }
 
     // The following allows you to edit the annotation popup when the viewer has already

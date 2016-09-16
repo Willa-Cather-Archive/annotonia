@@ -1768,6 +1768,89 @@
       for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
         annotation = _ref2[_k];
         item = $(this.item).clone().appendTo(list).data('annotation', annotation);
+
+        // Annotonia Reference ID Handling
+        // -------------------------------
+        if (annotation.anno_ref_id !== undefined
+        && annotation.anno_ref_id !== "") {
+          // Load annotation reference data
+          // if not already stored in Annotator.anno_ref_data
+          // or the reference has been changed
+          if (Annotator.anno_ref_data == undefined
+          || Annotator.anno_ref_data[annotation.anno_ref_id] == undefined
+          || Annotator.anno_ref_new
+          ) {
+            // Retrieve referenced annotation
+            if (Annotator.Plugin.Store
+            && ! Annotator.Plugin.Offline.Store.localStorage.length) {
+              if (Annotator.anno_ref_data == undefined) {Annotator.anno_ref_data = {}}
+
+              if (Annotator.anno_ref_data[annotation.anno_ref_id] == undefined) {
+                // Setting to synchronous, else need to refactor LOTS of code
+                // Warns of deprecation, but works in latest Firefox & Chrome
+                $.ajax(
+                  "https://rosie.unl.edu/annostore/search?_id="+ annotation.anno_ref_id
+                  , {async: false}
+                )
+                  .done(function (data) {
+                    if (data.rows[0] !== undefined) {
+                      Annotator.anno_ref_data[data.rows[0].id] = data.rows[0];
+
+                      // Reset invalid ref and data fail flags
+                      Annotator.anno_ref_data.invalid_ref = false;
+                      Annotator.anno_ref_data.ref_data_fail = false;
+                    }
+                    else {Annotator.anno_ref_data = {invalid_ref : true}}
+                  })
+                  .fail(function () {Annotator.anno_ref_data = {ref_data_fail : true}})
+                ;
+              }
+            }
+            else if (Annotator.Plugin.Offline) {
+              if (Annotator.anno_ref_data == undefined) {Annotator.anno_ref_data = {}}
+
+              if (Annotator.anno_ref_data[annotation.anno_ref_id] == undefined) {
+                annotation.anno_ref_data[annotation.anno_ref_id] = JSON.parse(Annotator.Plugin.Offline.Store.localStorage[Annotator.Plugin.Offline.Store.KEY_PREFIX + Annotator.Plugin.Offline.ANNOTATION_PREFIX + annotation.anno_ref_id]);
+              }
+            }
+
+            if (! (Annotator.anno_ref_data.invalid_ref
+                  || Annotator.anno_ref_data.ref_data_fail)
+            ) {
+              // Add link to edit page to viewer display instead
+              Annotator.anno_ref_data[annotation.anno_ref_id].text += '<br><p><a href="https://rosie.unl.edu/annotonia_status/edit.php?id='+ annotation.id  +'"><strong>&gt;&gt; Edit Referenced Annotation</strong></a></p>';
+
+              // Disable flag for new reference ID
+              Annotator.anno_ref_new = false;
+            }
+            else if (Annotator.anno_ref_data.invalid_ref) {
+              Annotator.anno_ref_data[annotation.anno_ref_id] = {};
+              Annotator.anno_ref_data[annotation.anno_ref_id].text = '<p>Sorry, that ID doesn\'t appear to point to an existing annotation.</p>';
+            }
+            else if (Annotator.anno_ref_data.ref_data_fail) {
+              Annotator.anno_ref_data[annotation.anno_ref_id] = {};
+              Annotator.anno_ref_data[annotation.anno_ref_id].text = '<p>Sorry, there was a problem retrieving the referenced annotation. Mouse away and we\'ll try again.</p>';
+            }
+
+            // Set flag to set viewer readOnly for referenced annotation
+            // as unable to get editing/deleting to work (Won't send Ajax PUT)
+            Annotator.anno_ref_data[annotation.anno_ref_id].viewerReadOnly = true;
+          }
+
+          // Add note to display of referencing annotation
+          if (! annotation.text) {
+            annotation.text = '<strong>Annotation Reference</strong><p>ID: '+ annotation.anno_ref_id +'</p>';
+          }
+
+          // Add ref annotation to end of annotation array and augment _len2
+          _ref2.push(Annotator.anno_ref_data[annotation.anno_ref_id]);
+          _len2++;
+
+          // Set new ref flag to cause viewer to retry Ajax retrieval
+          if (Annotator.anno_ref_data.ref_data_fail) {Annotator.anno_ref_data[annotation.anno_ref_id] = undefined}
+        }
+        // -------------------------------
+
         controls = item.find('.annotator-controls');
         link = controls.find('.annotator-link');
         edit = controls.find('.annotator-edit');
@@ -1780,7 +1863,8 @@
         } else {
           link.attr('href', links[0].href);
         }
-        if (this.options.readOnly) {
+        // Augment to disable controls for referenced annotations
+        if (this.options.readOnly || annotation.viewerReadOnly) {
           edit.remove();
           del.remove();
         } else {
