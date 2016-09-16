@@ -1783,6 +1783,8 @@
             // Retrieve referenced annotation
             if (Annotator.Plugin.Store
             && ! Annotator.Plugin.Offline.Store.localStorage.length) {
+              Annotator.is_offline = false;
+
               if (Annotator.anno_ref_data == undefined) {Annotator.anno_ref_data = {}}
 
               if (Annotator.anno_ref_data[annotation.anno_ref_id] == undefined) {
@@ -1807,18 +1809,22 @@
               }
             }
             else if (Annotator.Plugin.Offline) {
+              Annotator.is_offline = true;
+
               if (Annotator.anno_ref_data == undefined) {Annotator.anno_ref_data = {}}
 
               if (Annotator.anno_ref_data[annotation.anno_ref_id] == undefined) {
-                annotation.anno_ref_data[annotation.anno_ref_id] = JSON.parse(Annotator.Plugin.Offline.Store.localStorage[Annotator.Plugin.Offline.Store.KEY_PREFIX + Annotator.Plugin.Offline.ANNOTATION_PREFIX + annotation.anno_ref_id]);
+                Annotator.anno_ref_data[annotation.anno_ref_id] = JSON.parse(Annotator.Plugin.Offline.Store.localStorage[Annotator.Plugin.Offline.Store.KEY_PREFIX + Annotator.Plugin.Offline.ANNOTATION_PREFIX + annotation.anno_ref_id]);
               }
             }
 
             if (! (Annotator.anno_ref_data.invalid_ref
                   || Annotator.anno_ref_data.ref_data_fail)
             ) {
-              // Add link to edit page to viewer display instead
-              Annotator.anno_ref_data[annotation.anno_ref_id].text += '<br><p><a href="https://rosie.unl.edu/annotonia_status/edit.php?id='+ annotation.id  +'"><strong>&gt;&gt; Edit Referenced Annotation</strong></a></p>';
+              if (! Annotator.is_offline) {
+                // Add link to edit page to viewer display instead
+                Annotator.anno_ref_data[annotation.anno_ref_id].text += '<br><p><a href="https://rosie.unl.edu/annotonia_status/edit.php?id='+ annotation.id  +'"><strong>&gt;&gt; Edit Referenced Annotation</strong></a></p>';
+              }
 
               // Disable flag for new reference ID
               Annotator.anno_ref_new = false;
@@ -1832,9 +1838,11 @@
               Annotator.anno_ref_data[annotation.anno_ref_id].text = '<p>Sorry, there was a problem retrieving the referenced annotation. Mouse away and we\'ll try again.</p>';
             }
 
-            // Set flag to set viewer readOnly for referenced annotation
-            // as unable to get editing/deleting to work (Won't send Ajax PUT)
-            Annotator.anno_ref_data[annotation.anno_ref_id].viewerReadOnly = true;
+            if (! Annotator.is_offline) {
+              // Set flag to set viewer readOnly for referenced annotation
+              // as unable to get editing/deleting to work (Won't send Ajax PUT)
+              Annotator.anno_ref_data[annotation.anno_ref_id].viewerReadOnly = true;
+            }
           }
 
           // Add note to display of referencing annotation

@@ -32,6 +32,10 @@
   background-position: 0 -8.25em;
 }
 
+.hide {
+  display: none;
+}
+
 .tag-radios {
   overflow: hidden;
 }
