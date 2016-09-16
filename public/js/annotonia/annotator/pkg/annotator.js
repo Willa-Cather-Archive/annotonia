@@ -1823,7 +1823,7 @@
             ) {
               if (! Annotator.is_offline) {
                 // Add link to edit page to viewer display instead
-                Annotator.anno_ref_data[annotation.anno_ref_id].text += '<br><p><a href="https://rosie.unl.edu/annotonia_status/edit.php?id='+ annotation.id  +'"><strong>&gt;&gt; Edit Referenced Annotation</strong></a></p>';
+                Annotator.anno_ref_data[annotation.anno_ref_id].text += '<br><p><a href="https://rosie.unl.edu/annotonia_status/edit.php?id='+ annotation.anno_ref_id  +'"><strong>&gt;&gt; Edit Referenced Annotation</strong></a></p>';
               }
 
               // Disable flag for new reference ID
