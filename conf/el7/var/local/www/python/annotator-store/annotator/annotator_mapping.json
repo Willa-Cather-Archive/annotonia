@@ -1,0 +1,112 @@
+// Sync with mapping in annotation.py
+{
+  "settings": {
+    "index": {
+      "analysis": {
+        "filter": {
+          "english_stemmer": {
+            "type": "stemmer",
+            "language": "english"
+          },
+          "english_stop": {
+            "type": "stop",
+            "stopwords": "_english_"
+          },
+          "english_possessive_stemmer": {
+            "type": "stemmer",
+            "language": "possessive_english"
+          }
+        },
+        "analyzer": {
+          "english": {
+            "filter": [
+              "asciifolding",
+              "english_possessive_stemmer",
+              "english_stemmer",
+              "english_stop",
+              "lowercase"
+            ],
+            "tokenizer": "standard"
+          }
+        }
+      },
+      "creation_date": "1455053893777",
+      "number_of_shards": "5",
+      "number_of_replicas": "0",
+      "version": {
+        "created": "2010199"
+      }
+    }
+  },
+  "mappings": {
+    "annotation": {
+      "properties": {
+        "id": {
+          "type": "string", 
+          "copy_to": "ids_quote_and_text"
+        },
+        "ids_quote_and_text": {
+          "type": "string",
+          "analyzer": "english"
+        },
+        "anno_ref_id": {
+          "type": "string",
+          "copy_to": "ids_quote_and_text"
+        },
+        "created": {
+          "format": "strict_date_optional_time||epoch_millis",
+          "type": "date"
+        },
+        "updated": {
+          "format": "strict_date_optional_time||epoch_millis",
+          "type": "date"
+        },
+        "pageID": {
+          "type": "string", 
+          "copy_to": "ids_quote_and_text"
+        },
+        "quote": {
+          "type": "string", 
+          "copy_to": "ids_quote_and_text"
+        },
+        "tags": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string", 
+          "copy_to": "ids_quote_and_text"
+        },
+        "user": {
+          "type": "string"
+        },
+        "consumer": {
+          "type": "string"
+        },
+        "ranges": {
+          "properties": {
+            "endOffset": {
+              "type": "long"
+            },
+            "startOffset": {
+              "type": "long"
+            },
+            "start": {
+              "type": "string"
+            },
+            "end": {
+              "type": "string"
+            }
+          }
+        },
+        "permissions": {
+          "properties": {
+            "read": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -99,9 +99,6 @@ class _Model(dict):
     def get_mapping(cls):
         return {
             cls.__type__: {
-                '_source': {
-                    'excludes': ['id'],
-                },
                 'properties': cls.__mapping__,
             }
         }
@@ -217,6 +214,9 @@ class _Model(dict):
             # Pad ID number up to 6 digits
             next_id = sequence['_version']
             next_id = '{:06d}'.format(next_id)
+
+            # Store id in separate non-metafield to be usable for copy_to search
+            self['id'] = next_id
 
             res = self.es.conn.index(index=self.es.index,
                                      doc_type=self.__type__,

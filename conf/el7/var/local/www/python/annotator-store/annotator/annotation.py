@@ -2,15 +2,16 @@ from annotator import authz, document, es
 
 TYPE = 'annotation'
 MAPPING = {
-    'id': {'type': 'string', 'index': 'no'},
-    'anno_ref_id': {'type': 'string'},
-    'annotator_schema_version': {'type': 'string'},
+    # Add copy_to param to id, anno_ref_id, pageID, quote, and text fields
+    'id': {'type': 'string', 'copy_to': 'ids_quote_and_text'},
+    'ids_quote_and_text': {'type': 'string', 'analyzer': 'english'},
+    'anno_ref_id': {'type': 'string', 'copy_to': 'ids_quote_and_text'},
     'created': {'type': 'date'},
     'updated': {'type': 'date'},
-    'quote': {'type': 'string', 'analyzer': 'standard'},
-    'tag': {'type': 'string'},
-    'text': {'type': 'string', 'analyzer': 'standard'},
-    'uri': {'type': 'string'},
+    'pageID':{'type': 'string', 'copy_to': 'ids_quote_and_text'},
+    'quote': {'type': 'string', 'copy_to': 'ids_quote_and_text'},
+    'tags': {'type': 'string'},
+    'text': {'type': 'string', 'copy_to': 'ids_quote_and_text'},
     'user': {'type': 'string'},
     'consumer': {'type': 'string'},
     'range': {
@@ -28,9 +29,6 @@ MAPPING = {
             'delete': {'type': 'string'},
             'admin': {'type': 'string'}
         }
-    },
-    'document': {
-        'properties': document.MAPPING
     }
 }
 
