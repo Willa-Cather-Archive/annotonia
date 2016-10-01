@@ -20,8 +20,23 @@
 }
 
 .annotator-viewer .annotator-controls button {
-  background-size: 2.5em;
-  padding: 1em;
+  // Change ambiguous glyphicons back to text buttons
+  background: none;
+  background-color: #BBB;
+  border: 0.125em outset #DDD;
+  border-radius: 0.375em;
+  box-shadow: 0.125em 0.125em 0 rgba(128, 128, 128, 0.5);
+  color: #222;
+  height: auto;
+  opacity: 0.75;
+  padding: 0.5em;
+  text-indent: 0;
+  width: auto;
+}
+
+.annotator-viewer .annotator-controls button:active {
+  background-color: #AAA;
+  box-shadow: none;
 }
 
 .annotator-viewer .annotator-controls .annotator-delete {
