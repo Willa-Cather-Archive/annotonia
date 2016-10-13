@@ -23,6 +23,7 @@
   // Change ambiguous glyphicons back to text buttons
   background: none;
   background-color: #BBB;
+  background-image: none;
   border: 0.125em outset #DDD;
   border-radius: 0.375em;
   box-shadow: 0.125em 0.125em 0 rgba(128, 128, 128, 0.5);
