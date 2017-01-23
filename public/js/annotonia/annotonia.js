@@ -54,7 +54,7 @@ var optionsStore = {
   loadFromSearch: {
     'pageID' : pageID
   },
-  prefix: 'https://rosie.unl.edu/annostore'
+  prefix: '/annostore'
 };
 
 
