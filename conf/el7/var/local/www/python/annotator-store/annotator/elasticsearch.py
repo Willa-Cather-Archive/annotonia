@@ -11,7 +11,7 @@ from six.moves.urllib.parse import urlparse
 
 log = logging.getLogger(__name__)
 
-RESULTS_MAX_SIZE = 200
+RESULTS_MAX_SIZE = 10000
 RESULTS_DEFAULT_SIZE = 20
 
 
