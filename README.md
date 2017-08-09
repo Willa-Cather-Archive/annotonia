@@ -1,44 +1,13 @@
 # Annotonia
-Annotating Willa Cather Letters
+Annotations from Browser to TEI
 
-Using Annotator, which relies on Annotator Store for a back end
+## Components
 
+## TEI Display
+[TEI Boilerplate](https://github.com/GrantLS/TEI-Boilerplate) is used to display TEI documents in the browser as similarly to their original markup as possible.
 
-
-## Annotator-Store
-Latest Release - https://github.com/openannotation/annotator-store/releases/tag/v0.14.2
-
-This is a Python Flask app that serves an API to an Elasticsearch data store
-
-### Install
-Install in EL7 at `/var/local/www/python/annotator-store/`
-
-#### Dependencies
-Elasticsearch - [YUM Installation Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/master/rpm.html)
-
-```bash
-virtualenv pyenv
-source pyenv/bin/activate
-pip install -e .[flask]
-cp annotator.cfg.example annotator.cfg
-python run.py
-```
-
-### Restarting
-If Annotonia fails citing problems with the annotations store, the Annotator-Store Flask app has likely crashed.
-
-One may confirm by visiting the [root web path for Annotator-Store](https://cather.unl.edu/annostore/)
-
-**Restart Command for Andy**:<br>
-`/var/local/annotonia/store_restart.sh`
-
-**Restart Command for Anyone with Sudo**:<br>
-`sudo -u ajewell /var/local/annotonia/store_restart.sh`
-
-
-
-## Annotator
-Latest Release (Full Source) - https://github.com/openannotation/annotator/archive/v1.2.10.tar.gz
+## Annotation
+Annotation is handled by AnnotatorJS, modified in this repository from the latest AnnotatorJS release (Full Source) - https://github.com/openannotation/annotator/archive/v1.2.10.tar.gz
 
 ### Plugins
 #### Filter
@@ -59,7 +28,21 @@ Highlight annotations different colors based when specific tags applied
 #### Unsupported
 Display a message to users if their browser is unsupported
 
-### Notes
-We are only using a basic demo page in the repository. The Store plugin cannot make ajax requests to the API when this page is opened from the file.
 
-The files in `conf/etc/httpd/cdrh` are for use with Apache Cocoon-generated pages.
+## Storage
+This is handled by our fork of [Annotator-Store](https://github.com/Willa-Cather-Archive/annotator-store), a Python Flask app that serves an API to an Elasticsearch data store
+
+### Dependencies
+[Elasticsearch](https://www.elastic.co/)
+
+
+## Review
+Review of annotations is handled by [Annotonia-Status](https://github.com/Willa-Cather-Archive/annotonia-status), a set of PHP scripts to browse, search, and edit Annotonia annotations
+
+
+## TEI Export
+Export and integration of annotations into the TEI documents is handled by [Annotonia-Converter](https://github.com/Willa-Cather-Archive/annotonia-converter), a set of Ruby scripts using nokogiri to work with HTML and XML
+
+
+## Notes
+We are only using a basic demo page demonstrating how to add Annotonia to your web page in this repository. The AnnotatorJS Store plugin cannot make ajax requests to the API when this page is opened from the file.
