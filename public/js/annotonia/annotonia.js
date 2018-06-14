@@ -36,7 +36,9 @@ $('head').append('<style> \
 
 var optionsRichText = {
   tinymce:{
-    extended_valid_elements : "iframe[src|frameborder|style|scrolling|class|width|height|name|align|id]",
+    branding: false,
+    content_css: "js/annotonia/annotonia.css",
+    extended_valid_elements: "iframe[src|frameborder|style|scrolling|class|width|height|name|align|id]",
     menubar: false,
     plugins: "media image insertdatetime link code",
     selector: "li.annotator-item textarea",

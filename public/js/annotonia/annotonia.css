@@ -52,6 +52,23 @@
   display: none;
 }
 
+.mce-content-body p,
+.richText-annotation p {
+  color: #000;
+  font-size: 16px;
+  max-width: 30em;
+}
+
+.mce-content-body img,
+.richText-annotation img {
+  display: block;
+  height: auto;
+  margin: 0.5em;
+  max-height: 16em;
+  max-width: 100%;
+  width: auto;
+}
+
 .tag-radios {
   overflow: hidden;
 }
