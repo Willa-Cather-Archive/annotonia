@@ -82,6 +82,15 @@ $(function ($) {
       .annotator('addPlugin', 'Store', optionsStore)
       .annotator('addPlugin', 'Unsupported')
     ;
+
+    // May have false positives with unreliable user agent detection
+    var is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (is_safari) {
+      Annotator.showNotification("We've recently seen compatibility problems "
+        +"with the Safari browser. We recommend using another browser such as "
+        +"Firefox or Chrome until this issue is resolved. "
+        +"Thanks for your patience!");
+    }
   }
 });
 
